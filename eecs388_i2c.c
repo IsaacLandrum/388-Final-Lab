@@ -71,38 +71,42 @@ void breakup(int bigNum, uint8_t* low, uint8_t* high){
 
 void steering(int angle){
    int valToBreak = getServoCycle(angle);
-   breakup(valToBreak,bufWrite[2],bufWrite[3]);
+   bufWrite[0]=PCA9685_LED1_ON_L;
+   bufWrite[1]=0;
+   bufWrite[2]=0; 
+   breakup(valToBreak,&bufWrite[3],&bufWrite[4]);
+   metal_i2c_transfer(i2c,PCA9685_I2C_ADDRESS,bufWrite,5,bufRead,1);
 }
 
 void stopMotor(){
-    breakup(280,bufWrite[2],bufWrite[3]);
+    breakup(280,&bufWrite[2],&bufWrite[3]);
 }
 
 void driveForward(uint8_t speedFlag){
    if(speedFlag ==1)
    {
-         breakup(313,bufWrite[2],bufWrite[3]);
+         breakup(313,&bufWrite[2],&bufWrite[3]);
    }
    else if(speedFlag ==2){
-         breakup(315,bufWrite[2],bufWrite[3]);
+         breakup(315,&bufWrite[2],&bufWrite[3]);
    }
    else if(speedFlag == 3)
    {
-         breakup(317,bufWrite[2],bufWrite[3]);
+         breakup(317,&bufWrite[2],&bufWrite[3]);
    }
 }
 
 void driveReverse(uint8_t speedFlag){
    if(speedFlag ==1)
    {
-         breakup(267,bufWrite[2],bufWrite[3]);
+         breakup(267,&bufWrite[2],&bufWrite[3]);
    }
    else if(speedFlag ==2){
-         breakup(265,bufWrite[2],bufWrite[3]);
+         breakup(265,&bufWrite[2],&bufWrite[3]);
    }
    else if(speedFlag == 3)
    {
-         breakup(263,bufWrite[2],bufWrite[3]);
+         breakup(263,&bufWrite[2],&bufWrite[3]);
    }
 }
 
@@ -110,9 +114,8 @@ void driveReverse(uint8_t speedFlag){
 int main()
 {
     set_up_I2C();
-    /*
-        Add function calls here to complete task 6
-    */
+    delay(2000);
+    steering(20);
 }
 
 
