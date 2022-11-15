@@ -71,7 +71,7 @@ void breakup(int bigNum, uint8_t* low, uint8_t* high){
 
 void steering(int angle){
    int valToBreak = getServoCycle(angle);
-   bufWrite[0]=PCA9685_LED1_ON_L;
+   bufWrite[0]=PCA9685_LED0_ON_L;
    bufWrite[1]=0;
    bufWrite[2]=0; 
    breakup(valToBreak,&bufWrite[3],&bufWrite[4]);
@@ -79,34 +79,62 @@ void steering(int angle){
 }
 
 void stopMotor(){
+    bufWrite[0]=PCA9685_LED1_ON_L;
+    bufWrite[1]=0;
+    bufWrite[2]=0;
     breakup(280,&bufWrite[2],&bufWrite[3]);
+    metal_i2c_transfer(i2c,PCA9685_I2C_ADDRESS,bufWrite,5,bufRead,1);
 }
 
 void driveForward(uint8_t speedFlag){
    if(speedFlag ==1)
    {
-         breakup(313,&bufWrite[2],&bufWrite[3]);
+        bufWrite[0]=PCA9685_LED0_ON_L;
+        bufWrite[1]=0;
+        bufWrite[2]=0; 
+        breakup(313,&bufWrite[3],&bufWrite[4]);
+        metal_i2c_transfer(i2c,PCA9685_I2C_ADDRESS,bufWrite,5,bufRead,1);
    }
    else if(speedFlag ==2){
-         breakup(315,&bufWrite[2],&bufWrite[3]);
+         bufWrite[0]=PCA9685_LED0_ON_L;
+         bufWrite[1]=0;
+         bufWrite[2]=0; 
+         breakup(315,&bufWrite[3],&bufWrite[4]);
+         metal_i2c_transfer(i2c,PCA9685_I2C_ADDRESS,bufWrite,5,bufRead,1);
    }
    else if(speedFlag == 3)
    {
-         breakup(317,&bufWrite[2],&bufWrite[3]);
+         bufWrite[0]=PCA9685_LED0_ON_L;
+         bufWrite[1]=0;
+         bufWrite[2]=0; 
+         breakup(317,&bufWrite[3],&bufWrite[4]);
+         metal_i2c_transfer(i2c,PCA9685_I2C_ADDRESS,bufWrite,5,bufRead,1);
    }
 }
 
 void driveReverse(uint8_t speedFlag){
    if(speedFlag ==1)
    {
-         breakup(267,&bufWrite[2],&bufWrite[3]);
+        bufWrite[0]=PCA9685_LED1_ON_L;
+        bufWrite[1]=0;
+        bufWrite[2]=0; 
+        breakup(267,&bufWrite[3],&bufWrite[4]);
+        metal_i2c_transfer(i2c,PCA9685_I2C_ADDRESS,bufWrite,5,bufRead,1);
    }
    else if(speedFlag ==2){
-         breakup(265,&bufWrite[2],&bufWrite[3]);
+        bufWrite[0]=PCA9685_LED1_ON_L;
+        bufWrite[1]=0;
+        bufWrite[2]=0; 
+        breakup(265,&bufWrite[3],&bufWrite[4]);
+        metal_i2c_transfer(i2c,PCA9685_I2C_ADDRESS,bufWrite,5,bufRead,1);
    }
    else if(speedFlag == 3)
    {
-         breakup(263,&bufWrite[2],&bufWrite[3]);
+        bufWrite[0]=PCA9685_LED1_ON_L;
+        bufWrite[1]=0;
+        bufWrite[2]=0; 
+        breakup(263,&bufWrite[3],&bufWrite[4]);
+        metal_i2c_transfer(i2c,PCA9685_I2C_ADDRESS,bufWrite,5,bufRead,1);
    }
 }
 
@@ -114,8 +142,17 @@ void driveReverse(uint8_t speedFlag){
 int main()
 {
     set_up_I2C();
-    delay(2000);
-    steering(20);
+
+stopMotor();
+delay(2000);
+
+    driveReverse(1);
+     delay(1000);
+    driveForward(1);
+
+
+delay(2000);
+    stopMotor();
 }
 
 
