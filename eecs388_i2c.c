@@ -82,21 +82,21 @@ void stopMotor(){
     bufWrite[0]=PCA9685_LED1_ON_L;
     bufWrite[1]=0;
     bufWrite[2]=0;
-    breakup(280,&bufWrite[2],&bufWrite[3]);
+    breakup(280,&bufWrite[3],&bufWrite[4]);
     metal_i2c_transfer(i2c,PCA9685_I2C_ADDRESS,bufWrite,5,bufRead,1);
 }
 
 void driveForward(uint8_t speedFlag){
    if(speedFlag ==1)
    {
-        bufWrite[0]=PCA9685_LED0_ON_L;
+        bufWrite[0]=PCA9685_LED1_ON_L;
         bufWrite[1]=0;
         bufWrite[2]=0; 
         breakup(313,&bufWrite[3],&bufWrite[4]);
         metal_i2c_transfer(i2c,PCA9685_I2C_ADDRESS,bufWrite,5,bufRead,1);
    }
    else if(speedFlag ==2){
-         bufWrite[0]=PCA9685_LED0_ON_L;
+         bufWrite[0]=PCA9685_LED1_ON_L;
          bufWrite[1]=0;
          bufWrite[2]=0; 
          breakup(315,&bufWrite[3],&bufWrite[4]);
@@ -104,7 +104,7 @@ void driveForward(uint8_t speedFlag){
    }
    else if(speedFlag == 3)
    {
-         bufWrite[0]=PCA9685_LED0_ON_L;
+         bufWrite[0]=PCA9685_LED1_ON_L;
          bufWrite[1]=0;
          bufWrite[2]=0; 
          breakup(317,&bufWrite[3],&bufWrite[4]);
@@ -146,18 +146,38 @@ int main()
 stopMotor();
 delay(2000);
 
-    driveReverse(1);
-     delay(1000);
+    steering(0);
+    delay(2000);
     driveForward(1);
-
+    delay(2000);
+    steering(20);
+    delay(2000);
+    stopMotor();
+    delay(2000);
+    driveReverse(1);
+    delay(2000);
+    steering(0);
 
 delay(2000);
-    stopMotor();
+stopMotor();
 }
 
 
 /* Defining the breakup function */
 /*
+
+    steering(0);
+    delay(2000);
+    driveForward(1);
+    delay(2000);
+    steering(20);
+    delay(2000);
+    stopMotor();
+    delay(2000);
+    driveReverse(1);
+    delay(2000);
+    steering(0);
+
     -Task 1: breaking 12 bit into two 8-bit
     Define the function created that recieves a 12 bit number,
     0 to 4096 and breaks it up into two 8 bit numbers.
